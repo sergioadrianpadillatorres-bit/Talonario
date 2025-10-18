@@ -195,16 +195,6 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 
-// Borra el placeholder al hacer clic y lo restaura si queda vacío
-document.querySelectorAll('.form-box input, .form-box textarea').forEach(el => {
-    const originalPlaceholder = el.placeholder;
-    el.addEventListener('focus', () => {
-      el.placeholder = ''; // Borra el placeholder temporalmente
-    });
-    el.addEventListener('blur', () => {
-      if (el.value.trim() === '') {
-        el.placeholder = originalPlaceholder; // Restaura si no se escribió nada
-      }
-    });
-  });
+
   
+

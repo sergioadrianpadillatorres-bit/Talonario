@@ -174,3 +174,23 @@ button.secondary{background:#666}
     margin:0 auto;width: calc(200mm - 15mm);height: calc(var(--ticket-height-mm));}
   .perforation{left: calc(19.5% + 8px);}
 }
+.marca-desarrollador {
+    position:fixed;
+    bottom: 8px;
+    right: 10px;
+    font-size: 10px;
+    color: #444;
+    font-style: italic;
+    opacity: 0.7;
+    z-index: 2;
+    print-color-adjust: exact; /* mantiene color en impresión */
+    -webkit-print-color-adjust: exact;
+  }
+  
+  .marca-desarrollador span {
+    font-weight: bold;
+  }
+  
+ 
+  
+  
