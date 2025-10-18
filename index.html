@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Talonario - Generador</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<!-- CONTENEDOR DEL FORMULARIO -->
+<div class="form-card">
+  <h2>Datos del Talonario</h2>
+
+  <div class="form-grid">
+    <label for="nombreRifa">Nombre de la rifa:</label>
+    <input id="nombreRifa" type="text" value="" />
+
+    <label for="fechaJuega">Fecha en la que juega:</label>
+    <input id="fechaJuega" type="date" />
+
+    <label for="loteria">Lotería con la que juega:</label>
+    <input id="loteria" type="text" value="" />
+
+    <label for="responsable">Responsable:</label>
+    <input id="responsable" type="text" value="" />
+
+    <label for="celular">Celular:</label>
+    <input id="celular" type="text" value="" />
+
+    <label for="descripcion">Descripción (lo que se rifar)</label>
+    <input id="descripcion" type="text" value="" />
+
+    <label for="valor">Valor:</label>
+    <input id="valor" type="number" value="" />
+
+    <label for="count">Cantidad de boletos:</label>
+    <input id="count" type="number" min="1" value="10" />
+
+    <label for="start">Número inicial:</label>
+    <input id="start" type="number" min="1" value="1" />
+
+    <!-- input existente -->
+<label for="logoInput">Adiciona una imagen:</label>
+<input id="logoInput" type="file" accept="image/*" />
+
+<!-- agrega esta línea justo debajo para mostrar una mini-previsualización -->
+<img id="logoPreview" alt="Previsualización escudo" style="height:48px; display:none; margin-top:6px; border:1px solid #ddd; border-radius:4px;">
+
+  </div>
+
+  <div class="buttons-row">
+    <button id="gen">Generar talonario</button>
+    <button id="clear" class="secondary">Limpiar</button>
+    <button id="print" class="secondary">Imprimir / Guardar PDF</button>
+  </div>
+</div>
+
+<!-- AQUÍ SE MUESTRA EL TALONARIO -->
+<div id="container" class="sheet"></div>
+
+<script src="script.js"></script>
+</body>
+</html>

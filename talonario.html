@@ -1,0 +1,329 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Talonario - Rifa Pro CLAUSURA CORPOBANA 2025</title>
+<style>
+  :root{
+    --ticket-width-mm: 190mm;
+    --ticket-height-mm: 50mm;
+    --accent: #2b2b8a;
+  }
+
+  body{
+    font-family: "Helvetica", Arial, sans-serif;
+    margin: 18px;
+    -webkit-print-color-adjust: exact;
+    color: #111;
+  }
+
+  .controls{
+    margin-bottom: 12px;
+    display:flex;
+    gap:8px;
+    align-items:center;
+  }
+  .controls label{font-weight:600}
+  input[type=number]{width:80px;padding:6px;border-radius:6px;border:1px solid #ccc}
+  button{background:var(--accent);color:white;border:none;padding:8px 12px;border-radius:6px;cursor:pointer}
+  button.secondary{background:#666}
+
+  .sheet{
+    display:flex;
+    flex-wrap:wrap;
+    flex-direction:column;
+    gap:16px;
+    justify-content:flex-start;
+  }
+
+  .ticket{
+    width: calc(var(--ticket-width-mm));
+    height: calc(var(--ticket-height-mm));
+    box-sizing:border-box;
+    border: 1px solid #ddd;
+    display:flex;
+    background: white;
+    box-shadow: 0 1px 0 rgba(0,0,0,0.06);
+    position:relative;
+    padding:8px;
+    page-break-inside: avoid;
+  }
+
+  /* --- STUB (IZQUIERDA, VERTICAL) --- */
+  .stub{
+    width: 18%;
+    min-width: 80px;
+    border: 2px solid var(--accent);
+    border-radius:8px;
+    position:relative;
+    color:var(--accent);
+    font-size:12px;
+    display:flex;
+    flex-direction:column;
+    justify-content:space-between;
+    align-items:center;
+    padding:4px;
+  }
+
+  .stub-inner{
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+    display:flex;
+    flex-direction:column;
+    
+    
+    gap:15px;
+    font-size:11px;
+    font-weight:700;
+    color:var(--accent);
+  }
+
+  .stub-inner .field{
+    display:flex;
+    align-items:center;
+    
+    gap:5px;
+  }
+
+  .stub-inner .field::after{
+    content:"________________";
+    font-weight:300;
+  }
+
+  .payRow{
+    display:flex;
+    flex-direction:row;
+    align-items:center;
+    justify-content:center;
+    gap:6px;
+    margin-top:4px;
+  }
+
+  .payRow span{
+    font-weight:700;
+    font-size:11px;
+  }
+
+  .payRow .box{
+    display:inline-block;
+    width:10px;
+    height:10px;
+    border:1px solid #999;
+    border-radius:2px;
+  }
+
+  .number-vertical{
+    border:2px solid var(--accent);
+    padding:4px 8px;
+    border-radius:6px;
+    font-size:16px;
+    font-weight:bold;
+    color:var(--accent);
+    background:white;
+    margin-top:6px;
+    align-self:center;
+  }
+
+  /* --- MAIN (DERECHA, LOGO, DETALLES) --- */
+  .main{
+    flex:1;
+    margin-left: 10px;
+    border-radius:10px;
+    border:2px solid var(--accent);
+    padding:12px 12px;
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+    color:var(--accent);
+  }
+
+  .title{
+    text-align:center;
+    font-weight:800;
+    position:relative;
+  }
+
+  .title img{
+    position:absolute;
+    top:0;
+    right:0;
+    height:50px;
+  }
+
+  .title h1{
+    margin:0;
+    font-size:16px;
+    letter-spacing: -0.5px;
+  }
+  .title h2{
+    margin:0;
+    font-size:12px;
+    font-weight:800;
+  }
+
+  .info{
+    margin-top:3px;
+    font-size:13px;
+    color:#111;
+  }
+  .info .line{
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+  .info label{min-width:90px;font-weight:700;color:var(--accent)}
+  .info .fill{flex:1;border-bottom:1px solid #bbb;height:12px;padding:2px 4px}
+
+  .bottomRow{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-top:10px;
+  }
+
+  .num-box{
+    width:52px;height:25px;border-radius:8px;border:2px solid var(--accent);
+    display:flex;align-items:center;justify-content:center;font-weight:900;font-size:15px;
+    color:var(--accent);
+    background:white;
+  }
+
+  .perforation{
+    position:absolute;
+    left: calc(17.5% + 8px + 12px);
+    top:6px;
+    bottom:6px;
+    width:10px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:space-between;
+    padding:6px 0;
+    pointer-events:none;
+  }
+  .perforation .dot{width:2px;height:6px;background:#bbb;border-radius:2px}
+
+  @media print{
+    body{margin:0}
+    .controls{display:none}
+    .sheet{gap:5mm}
+    .ticket{
+      page-break-inside: avoid;
+      break-inside: avoid;
+      box-shadow:none;
+      border:1px solid #666;
+      margin:0 auto;
+      width: calc(200mm - 15mm);
+      height: calc(var(--ticket-height-mm));
+    }
+    .perforation{left: calc(19.5% + 8px);}
+  }
+  
+
+</style>
+</head>
+<body>
+
+<div class="controls">
+  <label for="count">Cantidad de boletos:</label>
+  <input id="count" type="number" min="1" value="10" />
+  <label for="start">Número inicial:</label>
+  <input id="start" type="number" min="1" value="1" />
+  <button id="gen">Generar talonario</button>
+  <button id="clear" class="secondary">Limpiar</button>
+  <button id="print" class="secondary">Imprimir / Guardar PDF</button>
+</div>
+
+<div id="container" class="sheet"></div>
+
+<script>
+  function padNumber(n, digits=3){
+    n = Number(n) || 0;
+    return String(n).padStart(digits,'0');
+  }
+
+  function createTicket(numberStr){
+    const ticket = document.createElement('div');
+    ticket.className = 'ticket';
+
+    const stub = document.createElement('div');
+    stub.className = 'stub';
+    stub.innerHTML = `
+      <div class="stub-inner">
+        <div class="field">Nomb:</div>
+        <div class="field">Direc:</div>
+        <div class="field">Telef:</div>
+        <div class="payRow">
+        <span>Pago</span><span class="box"></span>
+        <span>Debe</span><span class="box"></span>
+        <div class="number-vertical">${numberStr}</div>
+      </div>
+      
+      </div>
+     
+      
+    `;
+
+    const main = document.createElement('div');
+    main.className = 'main';
+    main.innerHTML = `
+      <div class="title">
+        <h1>Rifa Pro -</h1>
+        <h2>CLAUSURA CORPOBANA 2025</h2>
+        <img src="imagenes/Escudo.jpg" alt="Escudo">
+      </div>
+
+      <div class="info">
+        <div class="line"><label>Juega el</label><div class="fill">1 de noviembre con la lotería sinuano noche, Valor $ 5000</div></div>
+       
+        <div class="line" style="margin-top:8px"><label>Responsable:</label><div class="fill"> Desiree Padilla</div> </div>
+        <div class="line" style="margin-top:6px"><label>Cel:</label><div class="fill"> 311 6431379</div></div>
+
+        <div class="bottomRow">
+          <div style="font-size:16px;color:#333"> Se rifa un juego de sábanas doble</div>
+          <div class="num-box">${numberStr}</div>
+        </div>
+      </div>
+    `;
+
+    const perf = document.createElement('div');
+    perf.className = 'perforation';
+    for(let i=0;i<16;i++){
+      const d = document.createElement('div');
+      d.className='dot';
+      perf.appendChild(d);
+    }
+
+    ticket.appendChild(stub);
+    ticket.appendChild(main);
+    ticket.appendChild(perf);
+
+    return ticket;
+  }
+
+  document.getElementById('gen').addEventListener('click',()=>{
+    const cnt = parseInt(document.getElementById('count').value) || 0;
+    const start = parseInt(document.getElementById('start').value) || 1;
+    const container = document.getElementById('container');
+    container.innerHTML = '';
+    for(let i=0;i<cnt;i++){
+      const num = padNumber(start + i, 3);
+      const t = createTicket(num);
+      container.appendChild(t);
+    }
+    if(cnt>0) window.scrollTo({top:0,behavior:'smooth'});
+  });
+
+  document.getElementById('clear').addEventListener('click',()=>{
+    document.getElementById('container').innerHTML='';
+  });
+
+  document.getElementById('print').addEventListener('click',()=>{
+    window.print();
+  });
+
+  document.getElementById('gen').click();
+</script>
+</body>
+</html>
